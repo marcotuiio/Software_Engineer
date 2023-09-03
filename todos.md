@@ -2,16 +2,16 @@
 
 I. O planejamento  (já foi entregue o planejamento - neste trabalho tem o planejamento versus executado) ----> Dia 11/07
 Antes   
-  1.Tabela de tarefas
-     2. Diagrama de Pert
-     3. Diagrama de Gantt de todas as tarefas na linha do tempo
-     4. Diagram de Gantt por membro da equipe
-     5.Quadro Kanban antes começar a sprint 
+  1. Tabela de tarefas (falta definir encarregados de cada tarefa)
+  2. Diagrama de Pert (NAO!)
+  3. Diagrama de Gantt de todas as tarefas na linha do tempo
+  4. Diagram de Gantt por membro da equipe
+  5. Quadro Kanban antes começar a sprint 
 Fim do projeto
-1. Diagrama de Gantt de todas as tarefas planejadas e executadas  na linha do tempo
-2. Diagram de Gantt por membro planejado e executado por cada membro da equipe
-3. Quadro Kanban no fim da sprint
-4. Gráfico Burndown da sprint
+  1. Diagrama de Gantt de todas as tarefas planejadas e executadas  na linha do tempo
+  2. Diagram de Gantt por membro planejado e executado por cada membro da equipe
+  3. Quadro Kanban no fim da sprint
+  4. Gráfico Burndown da sprint
 
 V. Análise de Sistema
 3. Diagrama de Banco (DER)

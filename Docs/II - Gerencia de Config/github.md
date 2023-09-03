@@ -1,7 +1,5 @@
 # Gerência de Configuração - Engenharia de Software
 
-### Dono do repositório: Marco Túlio Alves de Barros
-
 ### Integrantes do grupo:
 - Ana Carolina Figueredo
 - Beatriz Barrios Caporusso
