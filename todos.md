@@ -2,11 +2,11 @@
 
 I. O planejamento  (já foi entregue o planejamento - neste trabalho tem o planejamento versus executado) ----> Dia 11/07
 Antes   
-  1. Tabela de tarefas (falta definir encarregados de cada tarefa)
-  2. Diagrama de Pert (NAO!)
-  3. Diagrama de Gantt de todas as tarefas na linha do tempo
-  4. Diagram de Gantt por membro da equipe
-  5. Quadro Kanban antes começar a sprint 
+  1. Tabela de tarefas ( ! falta definir encarregados de cada tarefa)
+  2. Diagrama de Pert (v)
+  3. Diagrama de Gantt de todas as tarefas na linha do tempo (v)
+  4. Diagram de Gantt por membro da equipe (n)
+  5. Quadro Kanban antes começar a sprint (v)
 Fim do projeto
   1. Diagrama de Gantt de todas as tarefas planejadas e executadas  na linha do tempo
   2. Diagram de Gantt por membro planejado e executado por cada membro da equipe
