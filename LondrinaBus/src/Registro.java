@@ -6,6 +6,7 @@ public class Registro {
     private String cpf;
     private String endereco;
 
+    public Registro() {}
     public Registro(String login, String senha, String nome, String cep, String cpf, String endereco){
         this.login = login;
         this.senha = senha;
