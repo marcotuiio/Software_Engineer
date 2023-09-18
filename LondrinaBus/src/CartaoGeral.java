@@ -4,9 +4,9 @@ import java.util.UUID;
 public class CartaoGeral {
     private String codigoNFC;
     private int numUnico;
-    private int saldoCredito;
+    protected int saldoCredito;
     private int quantidadeCreditos;
-    private double valorCredito;
+    protected double valorCredito;
 
     public CartaoGeral(int numUnico, int saldoCredito, double valorCredito) {
         this.codigoNFC = UUID.randomUUID().toString(); //Gerar um valor randon para o NFC do cartão
