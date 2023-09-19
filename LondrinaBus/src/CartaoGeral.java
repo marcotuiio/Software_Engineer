@@ -16,6 +16,9 @@ public class CartaoGeral {
         this.valorCredito = valorCredito; //Preço do crédito
     }
 
+    public CartaoGeral() {
+    }
+
     //Compra de Crédito (Provisório)
     public void comprarCreditos() {
         Scanner scanner = new Scanner(System.in);
