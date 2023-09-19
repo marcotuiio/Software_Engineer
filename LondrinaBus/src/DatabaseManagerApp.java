@@ -5,9 +5,9 @@ import java.sql.SQLException;
 // Classe que permite conexão ao banco de dados de forma génerica, limpo e simples de ser utilizado
 // em qualquer outro lugar do código de forma mais bem otimizada
 public class DatabaseManagerApp {
-    private static final String DB_URL = "";
-    private static final String DB_USER = "";
-    private static final String DB_PASSWORD = "";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/clientes";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "marco";
 
     private Connection connection;
 
