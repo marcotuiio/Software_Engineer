@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+
 public class GerenciadorAppOnibus {
+    private valorCredito; //fazer getters e setters, mais vale um na mão do que dois voando.
     private ArrayList<CartaoGeral> cartoes = new ArrayList<>();
     private ArrayList<Usuario> usuarios = new ArrayList<>();
     private DatabaseManagerApp databaseManager = new DatabaseManagerApp();
