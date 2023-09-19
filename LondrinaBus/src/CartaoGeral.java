@@ -2,11 +2,19 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class CartaoGeral {
+<<<<<<< HEAD
     protected String codigoNFC;
     protected int numUnico;
     protected int saldoCredito;
     protected double valorCredito;
     protected boolean isEstudante;
+=======
+    private String codigoNFC;
+    private int numUnico;
+    protected int saldoCredito;
+    private int quantidadeCreditos;
+    protected double valorCredito;
+>>>>>>> 0f3a8c9eab6c9f450fc5b1e9f070c68c57756d96
 
     public CartaoGeral() {}
 
@@ -17,6 +25,9 @@ public class CartaoGeral {
          this.saldoCredito = 0; //Saldo de Crédito
          this.valorCredito = 4.80; //Preço do crédito
          this.isEstudante = false;
+    }
+
+    public CartaoGeral() {
     }
 
     //Compra de Crédito (Provisório)
