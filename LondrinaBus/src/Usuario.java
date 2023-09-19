@@ -27,6 +27,7 @@ public class Usuario {
     public void setLogin(String login) {
         this.login = login;
     }
+
     public String getLogin() {
         return login;
     }
@@ -34,6 +35,7 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+    
     public String getSenha() {
         return senha;
     }
@@ -41,6 +43,7 @@ public class Usuario {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
     public String getNome() {
         return nome;
     }
@@ -48,6 +51,7 @@ public class Usuario {
     public void setCep(String cep) {
         this.cep = cep;
     }
+    
     public String getCep() {
         return cep;
     }
@@ -55,6 +59,7 @@ public class Usuario {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+    
     public String getCpf() {
         return cpf;
     }
@@ -62,10 +67,16 @@ public class Usuario {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
+    
     public String getEndereco() {
         return endereco;
     }
 
-    public void setNumUnicoCartao(int n) { this.numUnicoCartao = n; }
-    public int getNumUnicoCartao() { return this.numUnicoCartao; }
+    public void setNumUnicoCartao(int n) {
+        this.numUnicoCartao = n;
+    }
+    
+    public int getNumUnicoCartao() {
+        return this.numUnicoCartao;
+    }
 }
