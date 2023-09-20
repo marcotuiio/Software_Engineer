@@ -9,8 +9,8 @@ public class CartaoGeral {
     protected boolean beneficio;
 
     public CartaoGeral() {}
+
     // usar quando for de fato criar um novo usuário
-    
     public CartaoGeral(int numUnico) {
         this.codigoNFC = UUID.randomUUID().toString(); //Gerar um valor random para o NFC do cartão
          this.numUnico = numUnico; //Número do cartão
@@ -37,8 +37,8 @@ public class CartaoGeral {
     }
 
     //Praticamente igual à addCreditosGeral(), pode deixar em uma mesma função ou não
-    public addCreditosBeneficio(double valor){
-        if (this.beneficio() == true) {
+    public void addCreditosBeneficio(double valor){
+        if (this.beneficio) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Digite a quantidade de créditos desejada: ");
             int quantidadeDesejada = scanner.nextInt();
@@ -71,12 +71,12 @@ public class CartaoGeral {
         return numUnico;
     }
 
-    public void setSaldoCredito(int s) {
-        this.saldoCredito = s; 
+    public void setSaldoGeral(int s) {
+        this.saldoGeral = s;
     }
     
-    public int getSaldoCredito() {
-        return saldoCredito;
+    public int getSaldoGeral() {
+        return saldoGeral;
     }
 
     public void setBeneficio(boolean b) {
@@ -89,7 +89,7 @@ public class CartaoGeral {
 
     //acho que isso poderia estar no Controller - Laís
     public void printStatusCartao() {
-        if (this.isEstudante) {
+        if (this.beneficio) {
             System.out.println("CARTAO ESTUDANTE");
         } else {
             System.out.println("CARTAO GERAL");
