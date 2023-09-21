@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 public class GerenciadorAppOnibus {
-    private valorCredito; //fazer getters e setters, mais vale um na mão do que dois voando.
+    private double valorCredito; //fazer getters e setters, mais vale um na mão do que dois voando.
     private ArrayList<CartaoGeral> cartoes = new ArrayList<>();
     private ArrayList<Usuario> usuarios = new ArrayList<>();
     private DatabaseManagerApp databaseManager = new DatabaseManagerApp();
@@ -61,9 +61,7 @@ public class GerenciadorAppOnibus {
                     CartaoGeral cartaoGeral = new CartaoGeral();
                     cartaoGeral.setNumUnico(resultSet.getInt("numUnico"));
                     cartaoGeral.setCodigoNFC(resultSet.getString("codigoNFC"));
-                    cartaoGeral.setEstudante(resultSet.getBoolean("isEstudante"));
-                    cartaoGeral.setSaldoCredito(resultSet.getInt("saldoCredito"));
-                    cartaoGeral.setValorCredito(resultSet.getDouble("valorCredito"));
+                    cartaoGeral.setBeneficio(resultSet.getBoolean("isEstudante"));
                     cartoes.add(cartaoGeral);
                 }
             }
@@ -74,4 +72,14 @@ public class GerenciadorAppOnibus {
         for  (CartaoGeral cg : cartoes)
             System.out.println("CartãoGeral id: " + cg.numUnico);
     }
+
+    public void setValorCredito(boolean beneficio) {
+        if (beneficio) {
+            this.valorCredito = 2.4;
+        } else {
+            this.valorCredito = 4.8;
+        }
+    }
+
+    public double getValorCredito() { return this.valorCredito; }
 }
