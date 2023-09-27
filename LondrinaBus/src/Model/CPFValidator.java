@@ -1,3 +1,5 @@
+package Model;
+
 public class CPFValidator {
     public static boolean isValidCPF(String cpf) {
         if (cpf == null || cpf.length() != 11 || cpf.chars().allMatch(x -> x == cpf.charAt(0))) {

@@ -1,3 +1,5 @@
+package Model;
+
 public class Usuario {
     private String login;
     private String senha;
@@ -5,7 +7,7 @@ public class Usuario {
     private String cep;
     private String cpf;
     private String endereco;
-    private int numUnicoCartao;
+    private CartaoGeral cartaoGeral;
 
     public Usuario() {}
     public Usuario(String login, String senha, String nome, String cep, String cpf, String endereco){
@@ -72,11 +74,11 @@ public class Usuario {
         return endereco;
     }
 
-    public void setNumUnicoCartao(int n) {
-        this.numUnicoCartao = n;
+    public CartaoGeral getCartaoGeral() {
+        return cartaoGeral;
     }
-    
-    public int getNumUnicoCartao() {
-        return this.numUnicoCartao;
+
+    public void setCartaoGeral(CartaoGeral cartaoGeral) {
+        this.cartaoGeral = cartaoGeral;
     }
 }

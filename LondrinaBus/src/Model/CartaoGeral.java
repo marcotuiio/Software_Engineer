@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -7,16 +9,23 @@ public class CartaoGeral {
     protected int saldoGeral;
     protected int saldoBeneficio;
     protected boolean beneficio;
-
-    public CartaoGeral() {}
+    protected String cpfUser;
 
     // usar quando for de fato criar um novo usuário
-    public CartaoGeral(int numUnico) {
+    public CartaoGeral() {
         this.codigoNFC = UUID.randomUUID().toString(); //Gerar um valor random para o NFC do cartão
-         this.numUnico = numUnico; //Número do cartão
          this.saldoGeral = 0; //Saldo de crédito geral
          this.saldoBeneficio = 0; //Saldo de crédito benefício
          this.beneficio = false;
+    }
+
+    public CartaoGeral(int numUnico, String codigoNFC, int saldoGeral, boolean beneficio, String cpfUser) {
+        this.codigoNFC = codigoNFC;
+        this.numUnico = numUnico;
+        this.saldoGeral = saldoGeral;
+//        this.saldoBeneficio = saldoBeneficio;
+        this.beneficio = beneficio;
+        this.cpfUser = cpfUser;
     }
 
     //Compra de Crédito (Provisório), valor vem do Controller
@@ -87,13 +96,12 @@ public class CartaoGeral {
         return this.beneficio;
     }
 
-    //acho que isso poderia estar no Controller - Laís
-    public void printStatusCartao() {
-        if (this.beneficio) {
-            System.out.println("CARTAO ESTUDANTE");
-        } else {
-            System.out.println("CARTAO GERAL");
-        }
+    public String getCpfUser() {
+        return cpfUser;
+    }
+
+    public void setCpfUser(String cpfUser) {
+        this.cpfUser = cpfUser;
     }
 
 }
