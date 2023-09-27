@@ -2,15 +2,6 @@ create schema clientes;
 
 use clientes;
 
-create table CartaoGeral (
-	numUnico int,
-	codigoNFC varchar(100), -- talvez colocar como not null na hora de criar
-    isEstudante boolean default false,
-    saldoCredito int default 0,
-    primary key(numUnico)
-    -- constraint uk_codNFC unique(codigoNFC) 
-);
-
 create table Usuario (
 	cpf varchar(11),
 	nome varchar(100) not null,
@@ -18,37 +9,49 @@ create table Usuario (
     senha varchar(100) not null,
     cep varchar(10),
     endereco varchar(100),
-    numUnicoCartao int,
-    primary key(cpf), 
-    constraint fk_numUnico_cartao foreign key(numUnicoCartao) references CartaoGeral(numUnico),
-    constraint uk_numUnico_cartao unique(numUnicoCartao) 
+    primary key(cpf)
+);
+
+create table CartaoGeral (
+	numUnico int not null auto_increment,
+	codigoNFC varchar(100), -- talvez colocar como not null na hora de criar
+    beneficio boolean default false,
+    saldoGeral int default 0,
+    saldoBeneficio int default 0,
+    cpfUser varchar(11),
+    primary key(numUnico),
+    constraint fk_cpgUser foreign key(cpfUser) references Usuario(cpg),
+    constraint uk_cpfUser unique(cpfUser),
+    constraint ck_saldoBeneficio check (not (beneficio = false and saldoBeneficio <> 0))
+    -- constraint uk_codNFC unique(codigoNFC) 
 );
 
 -- Inserir dados fictícios na tabela CartaoGeral
-INSERT INTO CartaoGeral (numUnico, codigoNFC, isEstudante, saldoCredito)
+INSERT INTO CartaoGeral (codigoNFC, beneficio, saldoGeral, saldoBeneficio, userCpf)
 VALUES
-    (1, 'ABC123', true, 100),
-    (2, 'DEF456', false, 50),
-    (3, 'GHI789', false, 75);
+    ('ABC123', true, 100, 0, '12345678901'),
+    ('DEF456', false, 50, 0, '98765432109'),
+    ('GHI789', false, 75, 0, '11122233344');
     
 -- Inserir dados fictícios na tabela Usuario
-INSERT INTO Usuario (cpf, nome, login, senha, cep, endereco, numUnicoCartao)
+INSERT INTO Usuario (cpf, nome, login, senha, cep, endereco)
 VALUES
-    ('12345678901', 'João Silva', 'joao123', 'senha123', '12345-678', 'Rua A, 123', 1),
-    ('98765432109', 'Maria Santos', 'maria456', 'senha456', '54321-876', 'Avenida B, 456', 2),
-    ('11122233344', 'Pedro Pereira', 'pedro789', 'senha789', '98765-432', 'Rua C, 789', 3);
+    ('12345678901', 'João Silva', 'joao123', 'senha123', '12345-678', 'Rua A, 123'),
+    ('98765432109', 'Maria Santos', 'maria456', 'senha456', '54321-876', 'Avenida B, 456'),
+    ('11122233344', 'Pedro Pereira', 'pedro789', 'senha789', '98765-432', 'Rua C, 789');
 
 select * from cartaogeral;
 select * from usuario;
 
 -- TEST AREA
 
-INSERT INTO CartaoGeral (numUnico, codigoNFC, isEstudante, saldoCredito)
+INSERT INTO Usuario (cpf, nome, login, senha, cep, endereco)
 VALUES
-    (6, 'KSD986', true, 20);
-INSERT INTO Usuario (cpf, nome, login, senha, cep, endereco, numUnicoCartao)
+    ('72932331345', 'Bia Atriz', 'bia666', 'senha921', '65308-992', 'Rua XV, 92');
+INSERT INTO CartaoGeral (numUnico, codigoNFC, beneficio, saldoCredito)
 VALUES
-    ('72932331345', 'Bia Atriz', 'bia666', 'senha921', '65308-992', 'Rua XV, 92', 6);
+    (6, 'KSD986', true, 20, '11122233344');
+    
 -- drop table usuario;
 -- drop table cartaogeral; 
 
