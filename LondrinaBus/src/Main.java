@@ -6,5 +6,7 @@ public class Main {
 
         gerenciadorAppOnibus.queryUsuario();
         gerenciadorAppOnibus.queryCartaoGeral();
+
+        gerenciadorAppOnibus.makeMenu();
     }
 }

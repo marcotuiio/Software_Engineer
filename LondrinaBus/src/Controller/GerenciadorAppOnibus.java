@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.FormularioBeneficio;
 import Model.Usuario;
 import Model.CartaoGeral;
 
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
 import java.sql.*;
 
 public class GerenciadorAppOnibus {
-    private double valorCredito; //fazer getters e setters, mais vale um na mão do que dois voando.
+    private double valorCredito = 4.8; //fazer getters e setters, mais vale um na mão do que dois voando.
     private ArrayList<CartaoGeral> cartoes = new ArrayList<>();
     private ArrayList<Usuario> usuarios = new ArrayList<>();
     private DatabaseManagerApp databaseManager = new DatabaseManagerApp();
@@ -43,14 +44,14 @@ public class GerenciadorAppOnibus {
             Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (Usuario u : usuarios)
-            System.out.printf("Usuário com dados: %s %s %d\n", u.getCpf(), u.getNome());
+            System.out.printf("Usuário com dados: %s %s\n", u.getCpf(), u.getNome());
     }
 
     public void queryCartaoGeral() {
 
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
-
+        String cpfUser = "";
         try {
             preparedStatement = connection.prepareStatement(
                     "SELECT * from cartaogeral"
@@ -63,7 +64,6 @@ public class GerenciadorAppOnibus {
                     cartaoGeral.setNumUnico(resultSet.getInt("numUnico"));
                     cartaoGeral.setCodigoNFC(resultSet.getString("codigoNFC"));
                     cartaoGeral.setBeneficio(resultSet.getBoolean("beneficio"));
-                    cartaoGeral.setCpfUser(resultSet.getString("cpfUser"));
                     cartoes.add(cartaoGeral);
                 }
             }
@@ -72,7 +72,7 @@ public class GerenciadorAppOnibus {
             Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
         }
         for  (CartaoGeral cg : cartoes)
-            System.out.println("CartãoGeral id: " + cg.getNumUnico() + " usuario " + cg.getCpfUser());
+            System.out.println("CartãoGeral id: " + cg.getNumUnico());
     }
 
     public void setValorCredito(boolean beneficio) {
@@ -89,20 +89,18 @@ public class GerenciadorAppOnibus {
 
     private Usuario criarUsuario(Scanner sc) {
         System.out.println("\n CRIANDO NOVO USUÁRIO: ");
-        System.out.println("Informe nome: ");
-        String nome = sc.next();
-        System.out.println("Informe login: ");
+        System.out.print("Informe nome: ");
+        String nome = sc.nextLine();
+        System.out.print("Informe login: ");
         String login = sc.next();
-        System.out.println("Informe senha: ");
+        System.out.print("Informe senha: ");
         String senha = sc.next();
-        System.out.println("Informe CPF: ");
+        System.out.print("Informe CPF: ");
         String cpf = sc.next();
-        System.out.println("Informe CEP: ");
+        System.out.print("Informe CEP: ");
         String cep = sc.next();
-        System.out.println("Informe endereço: ");
-        String endereco = sc.next();
-
-        CartaoGeral cartaoGeral = new CartaoGeral();
+        System.out.print("Informe endereço: ");
+        String endereco = sc.nextLine();
 
         Usuario usuario = new Usuario(login, senha, nome, cep, cpf, endereco);
 
@@ -128,6 +126,8 @@ public class GerenciadorAppOnibus {
 
             String sqlInsertCartao = "INSERT INTO cartaogeral (codigoNFC, cpfUser) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(sqlInsertCartao);
+            CartaoGeral cartaoGeral = new CartaoGeral();
+            usuario.setCartaoGeral(cartaoGeral);
 
             preparedStatement.setString(1, cartaoGeral.getCodigoNFC());
             preparedStatement.setString(2, usuario.getCpf());
@@ -146,7 +146,7 @@ public class GerenciadorAppOnibus {
 
     private Usuario logarUsuario(Scanner sc) {
         System.out.println("\n LOGANDO USUÁRIO: ");
-        System.out.println("Informe CPF: ");
+        System.out.print("Informe CPF: ");
         String cpf = sc.next();
 
         databaseManager.connect();
@@ -170,7 +170,10 @@ public class GerenciadorAppOnibus {
 
                 Usuario usuarioEncontrado = new Usuario(login, senha, nome, cep, cpf, endereco);
 
-//                System.out.println("Usuário encontrado");
+                CartaoGeral cartaoGeral = obterCartao(usuarioEncontrado.getCpf());
+
+                usuarioEncontrado.setCartaoGeral(cartaoGeral);
+
                 return usuarioEncontrado;
 
             } else {
@@ -183,7 +186,7 @@ public class GerenciadorAppOnibus {
         return null;
     }
 
-    private CartaoGeral obterCartao(Usuario usuario) {
+    private CartaoGeral obterCartao(String cpf) {
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
 
@@ -192,7 +195,7 @@ public class GerenciadorAppOnibus {
 
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, usuario.getCpf());
+            preparedStatement.setString(1, cpf);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -200,9 +203,10 @@ public class GerenciadorAppOnibus {
                 int numUnico = resultSet.getInt("numUnico");
                 String codigoNFC = resultSet.getString("codigoNFC");
                 boolean beneficio = resultSet.getBoolean("beneficio");
-                int saldoCredito = resultSet.getInt("saldoCredito");
+                int saldoCredito = resultSet.getInt("saldoGeral");
+                int saldoBeneficio = resultSet.getInt("saldoBeneficio");
 
-                CartaoGeral cartaoGeral = new CartaoGeral(numUnico, codigoNFC, saldoCredito, beneficio, usuario.getCpf());
+                CartaoGeral cartaoGeral = new CartaoGeral(numUnico, codigoNFC, saldoCredito, saldoBeneficio, beneficio);
                 return cartaoGeral;
 
             } else {
@@ -216,9 +220,70 @@ public class GerenciadorAppOnibus {
         return null;
     }
 
+    private void compraCredito(Usuario usuario, Scanner sc) {
+        if (usuario == null) {
+            System.out.println("Você precisa estar logado para comprar créditos.");
+            return;
+        }
+        System.out.print("Comprar crédito normal (1) ou com benefício (2): ");
+        int tipo = sc.nextInt();
+
+        if (usuario.getCartaoGeral().getBeneficio() == true && tipo == 2) {
+            setValorCredito(usuario.getCartaoGeral().getBeneficio());
+            usuario.getCartaoGeral().addCreditosBeneficio(usuario, valorCredito);
+
+        } else if (usuario.getCartaoGeral().getBeneficio() == true && tipo == 1) {
+            usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito);
+
+        } else
+            usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito);
+
+
+        databaseManager.connect();
+        Connection connection = databaseManager.getConnection();
+
+        try {
+            String sqlInsertUser = "UPDATE cartaogeral SET saldoGeral = ?, saldoBeneficio = ? WHERE cpfUser = ?";
+            preparedStatement = connection.prepareStatement(sqlInsertUser);
+
+            preparedStatement.setInt(1, usuario.getCartaoGeral().getSaldoGeral());
+            preparedStatement.setInt(2, usuario.getCartaoGeral().getSaldoBeneficio());
+            preparedStatement.setString(3, usuario.getCpf());
+
+            // Execute a instrução SQL de atualização
+            int linhasAfetadas = preparedStatement.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                System.out.println("Cartão geral atualizado com sucesso!");
+            } else {
+                System.out.println("Falha ao atualizar o cartão geral.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+        private void solicitaBeneficio(Usuario usuario) {
+        if (usuario == null) {
+            System.out.println("Você precisa estar logado para solicitar benefício.");
+            return;
+        }
+        if (usuario.getCartaoGeral().getBeneficio()) {
+            System.out.println("Você já tem benefício.");
+            return;
+        }
+        // Fazer tabela para documentos do benefício
+        System.out.println("Anexe os documentos: ");
+        String docs = " - "; // não sei como anexar documentos
+
+        FormularioBeneficio formularioBeneficio = new FormularioBeneficio();
+        // enviarAnaliseCmtu(formularioBeneficio);
+    }
+
     public void makeMenu() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Sistema LondriBus - Escolha sua opção: ");
+        System.out.println("\nSistema LondriBus - Escolha sua opção: ");
         System.out.println("1 - Cadastrar novo usuário\n" +
                 "2 - Logar usuário\n" +
                 "3 - Comprar créditos\n" +
@@ -226,31 +291,32 @@ public class GerenciadorAppOnibus {
                 "0 - SAIR\n");
         int op = sc.nextInt();
 
+        Usuario usuario = null;
         while (op != 0) {
-            Usuario usuario;
             switch (op) {
                 case 1:
                     usuario = criarUsuario(sc);
                     if (usuario == null)
                         System.out.println("Falha ao inserir usuário. Tente novamente");
+                    else
+                        System.out.print("\nUsuário " + usuario.getNome() + " criado e logado!\n");
                     break;
 
                     case 2:
+                        if (usuario != null) break;
                     usuario = logarUsuario(sc);
                     if (usuario == null)
                         System.out.println("Nenhum usuário encontrado com o CPF informado. Tente novamente\n");
+                    else
+                        System.out.print("\nUsuário " + usuario.getNome() + " logado!\n");
                     break;
 
                 case 3:
-                    obterCartao(sc);
+                    compraCredito(usuario, sc);
                     break;
 
                 case 4:
-                    obterCartao(sc);
-                    break;
-
-                case 5:
-                    obterCartao(sc);
+                    solicitaBeneficio(usuario);
                     break;
 
                 default:
@@ -258,15 +324,15 @@ public class GerenciadorAppOnibus {
                     break;
             }
 
-            System.out.println("Sistema LondriBus - Escolha sua opção: ");
+            System.out.println("\nSistema LondriBus - Escolha sua opção: ");
             System.out.println("1 - Cadastrar novo usuário\n" +
                     "2 - Logar usuário\n" +
-                    "3 - Emitir cartão\n" +
-                    "4 - Comprar créditos\n" +
-                    "5 - Solicitar benefício\n" +
+                    "3 - Comprar créditos\n" +
+                    "4 - Solicitar benefício\n" +
                     "0 - SAIR\n");
             op = sc.nextInt();
         }
+        sc.close();
     }
 
     public void printStatusCartao(CartaoGeral cg) {
@@ -276,5 +342,4 @@ public class GerenciadorAppOnibus {
             System.out.println("CARTAO GERAL");
         }
     }
-
 }
