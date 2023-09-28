@@ -9,7 +9,6 @@ public class CartaoGeral {
     protected int saldoGeral;
     protected int saldoBeneficio;
     protected boolean beneficio;
-    protected String cpfUser;
 
     // usar quando for de fato criar um novo usuário
     public CartaoGeral() {
@@ -19,35 +18,36 @@ public class CartaoGeral {
          this.beneficio = false;
     }
 
-    public CartaoGeral(int numUnico, String codigoNFC, int saldoGeral, boolean beneficio, String cpfUser) {
+    public CartaoGeral(int numUnico, String codigoNFC, int saldoGeral, int saldoBeneficio, boolean beneficio) {
         this.codigoNFC = codigoNFC;
         this.numUnico = numUnico;
         this.saldoGeral = saldoGeral;
-//        this.saldoBeneficio = saldoBeneficio;
+        this.saldoBeneficio = saldoBeneficio;
         this.beneficio = beneficio;
-        this.cpfUser = cpfUser;
     }
 
     //Compra de Crédito (Provisório), valor vem do Controller
-    public void addCreditosGeral(double valor) {
+    public void addCreditosGeral(Usuario usuario, double valor) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite a quantidade de créditos desejada: ");
         int quantidadeDesejada = scanner.nextInt();
         scanner.nextLine();
+        CartaoGeral cg = usuario.getCartaoGeral();
 
         if (quantidadeDesejada > 0) {
             double valorTotal = quantidadeDesejada * valor;
-            saldoGeral += valorTotal;
+            cg.setSaldoGeral(cg.getSaldoGeral() + quantidadeDesejada);
             System.out.println(quantidadeDesejada + " crédito(s) comprado(s) com sucesso por um valor total de R$ " + valorTotal);
-            System.out.println("Saldo atual: " + saldoGeral);
+            System.out.println("Saldo atual geral: " + cg.getSaldoGeral());
         } else {
             System.out.println("A quantidade desejada de créditos deve ser maior que zero.");
         }
     }
 
     //Praticamente igual à addCreditosGeral(), pode deixar em uma mesma função ou não
-    public void addCreditosBeneficio(double valor){
-        if (this.beneficio) {
+    public void addCreditosBeneficio(Usuario estudante, double valor){
+        CartaoGeral ce = estudante.getCartaoGeral();
+        if (ce.getBeneficio()) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Digite a quantidade de créditos desejada: ");
             int quantidadeDesejada = scanner.nextInt();
@@ -55,9 +55,9 @@ public class CartaoGeral {
 
             if (quantidadeDesejada > 0) {
                 double valorTotal = quantidadeDesejada * valor;
-                saldoBeneficio += valorTotal;
+                ce.setSaldoBeneficio(ce.getSaldoBeneficio() + quantidadeDesejada);
                 System.out.println(quantidadeDesejada + " crédito(s) comprado(s) com sucesso por um valor total de R$ " + valorTotal);
-                System.out.println("Saldo atual: " + saldoBeneficio);
+                System.out.println("Saldo atual com benefício: " + ce.getSaldoBeneficio());
             } else {
                 System.out.println("A quantidade desejada de créditos deve ser maior que zero.");
             }
@@ -88,6 +88,14 @@ public class CartaoGeral {
         return saldoGeral;
     }
 
+    public int getSaldoBeneficio() {
+        return saldoBeneficio;
+    }
+
+    public void setSaldoBeneficio(int saldoBeneficio) {
+        this.saldoBeneficio = saldoBeneficio;
+    }
+
     public void setBeneficio(boolean b) {
         this.beneficio = b;
     }
@@ -96,12 +104,5 @@ public class CartaoGeral {
         return this.beneficio;
     }
 
-    public String getCpfUser() {
-        return cpfUser;
-    }
-
-    public void setCpfUser(String cpfUser) {
-        this.cpfUser = cpfUser;
-    }
 
 }
