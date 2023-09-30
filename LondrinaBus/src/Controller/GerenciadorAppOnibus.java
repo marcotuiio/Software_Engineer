@@ -92,13 +92,13 @@ public class GerenciadorAppOnibus {
         System.out.print("Informe nome: ");
         String nome = sc.nextLine();
         System.out.print("Informe login: ");
-        String login = sc.next();
+        String login = sc.nextLine();
         System.out.print("Informe senha: ");
-        String senha = sc.next();
+        String senha = sc.nextLine();
         System.out.print("Informe CPF: ");
-        String cpf = sc.next();
+        String cpf = sc.nextLine();
         System.out.print("Informe CEP: ");
-        String cep = sc.next();
+        String cep = sc.nextLine();
         System.out.print("Informe endereço: ");
         String endereco = sc.nextLine();
 
