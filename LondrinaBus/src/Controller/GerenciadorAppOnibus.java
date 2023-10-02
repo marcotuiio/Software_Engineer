@@ -1,8 +1,6 @@
 package Controller;
 
-import Model.FormularioBeneficio;
-import Model.Usuario;
-import Model.CartaoGeral;
+import Model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -278,6 +276,7 @@ public class GerenciadorAppOnibus {
         String docs = " - "; // não sei como anexar documentos
 
         FormularioBeneficio formularioBeneficio = new FormularioBeneficio();
+        System.out.println("Enviando formulário de benefícios para CMTU.");
         // enviarAnaliseCmtu(formularioBeneficio);
     }
 
@@ -287,7 +286,10 @@ public class GerenciadorAppOnibus {
         System.out.println("1 - Cadastrar novo usuário\n" +
                 "2 - Logar usuário\n" +
                 "3 - Comprar créditos\n" +
-                "4 - Solicitar benefício\n" +
+                "4 - Solicitar benefício de estudante\n" +
+                "5 - Acessar notificações\n" +
+                "6 - Solicitar status cartão\n" +
+                "7 - SAC\n" +
                 "0 - SAIR\n");
         int op = sc.nextInt();
 
@@ -302,7 +304,7 @@ public class GerenciadorAppOnibus {
                         System.out.print("\nUsuário " + usuario.getNome() + " criado e logado!\n");
                     break;
 
-                    case 2:
+                case 2:
                         if (usuario != null) break;
                     usuario = logarUsuario(sc);
                     if (usuario == null)
@@ -319,6 +321,23 @@ public class GerenciadorAppOnibus {
                     solicitaBeneficio(usuario);
                     break;
 
+                case 5:
+                    Notificador notificador = new Notificador();
+//                    notificador.filtrarNoticias();
+                    System.out.println("Sistema de notícias relevantes no transporte público em Londrina\n");
+//                    notificador.filtrarAnomalias();
+                    System.out.println("Sistema de anomalias no transporte público em  Londrina\n");
+                    break;
+
+                case 6:
+                    printStatusCartao(usuario, usuario.getCartaoGeral());
+                    break;
+
+                case 7:
+                    GerenciadorSAC sac = new GerenciadorSAC();
+                    sac.inicioAtendimento();
+                    break;
+
                 default:
                     System.out.println("Opção indisponível. Tente novamente.");
                     break;
@@ -328,18 +347,21 @@ public class GerenciadorAppOnibus {
             System.out.println("1 - Cadastrar novo usuário\n" +
                     "2 - Logar usuário\n" +
                     "3 - Comprar créditos\n" +
-                    "4 - Solicitar benefício\n" +
+                    "4 - Solicitar benefício de estudante\n" +
+                    "5 - Acessar notificações\n" +
+                    "6 - Solicitar status cartão\n" +
+                    "7 - SAC\n" +
                     "0 - SAIR\n");
             op = sc.nextInt();
         }
         sc.close();
     }
 
-    public void printStatusCartao(CartaoGeral cg) {
+    public void printStatusCartao(Usuario u, CartaoGeral cg) {
         if (cg.getBeneficio()) {
-            System.out.println("CARTAO ESTUDANTE");
+            System.out.println("USUARIO " + u.getNome() + " CARTAO ESTUDANTE " + cg.getCodigoNFC());
         } else {
-            System.out.println("CARTAO GERAL");
+            System.out.println("USUARIO " + u.getNome() + " CARTAO GERAL " + cg.getCodigoNFC());
         }
     }
 }
