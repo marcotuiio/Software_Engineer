@@ -14,13 +14,13 @@ Fim do projeto
   4. Gráfico Burndown da sprint (v)
 
 V. Análise de Sistema
-3. Diagrama de Banco (DER) (bia ta fazendo)
+3. Diagrama de Banco (DER) (v)
 
 VI. Projeto
-1. Diagrama de sequência (ana vai arrumar)
-2. Digrama de Classe (lais vai arrumar)
-3. Diagrama de Pacotes (?)
-4. Diagrama de Componentes (?)
+1. Diagrama de sequência (ana arrumou concessao beneficio e comprar credito)
+2. Digrama de Classe (v)
+3. Diagrama de Pacotes (? nao temos e nao sei o q eh)
+4. Diagrama de Componentes (? nao temos e nao sei o q eh)
 
 VII. Implementação
 1. Código Fonte conforme os diagramas (v)
