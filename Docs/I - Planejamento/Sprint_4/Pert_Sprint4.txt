@@ -1,0 +1,35 @@
+graph TD
+    inicio((inicio))
+    T1((T1 t=2h))
+    T2((T2 t=10h))
+    T3((T3 t=2h))
+    T4((T4 t=2h))
+    T5((T5 t=3h))
+    T6((T6 t=2h))
+    T7((T7 t=1h))
+    T8((T8 t=7h))
+    T9((T9 t=3h))
+    T10((T10 t=4h))
+    final((final))
+
+    inicio --> T1
+    inicio --> T3
+    inicio --> T4
+    inicio --> T5
+    inicio --> T6
+
+    T1 --> |2h| T2
+    T1 --> |2h| T7
+
+    T7 --> |3h| T8
+
+    T2 --> |12h| T9
+    T8 --> |10h| T9
+
+    T3 --> |2h| T10
+    T4 --> |2h| T10
+    T5 --> |2h| T10
+    T6 --> |2h| T10
+    T9 --> |15h| T10
+
+    T10 --> |19h| final
