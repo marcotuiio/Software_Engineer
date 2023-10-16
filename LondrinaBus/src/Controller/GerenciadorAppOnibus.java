@@ -231,10 +231,13 @@ public class GerenciadorAppOnibus {
             usuario.getCartaoGeral().addCreditosBeneficio(usuario, valorCredito);
 
         } else if (usuario.getCartaoGeral().getBeneficio() == true && tipo == 1) {
+            valorCredito = 4.8;
             usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito);
 
-        } else
+        } else {
+            valorCredito = 4.8;
             usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito);
+        }
 
 
         databaseManager.connect();
@@ -305,7 +308,7 @@ public class GerenciadorAppOnibus {
                     break;
 
                 case 2:
-                        if (usuario != null) break;
+                    if (usuario != null) break;
                     usuario = logarUsuario(sc);
                     if (usuario == null)
                         System.out.println("Nenhum usuário encontrado com o CPF informado. Tente novamente\n");
