@@ -3,6 +3,7 @@ package org.LondriBus.Controller;
 import org.LondriBus.Model.*;
 import org.LondriBus.Model.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -151,12 +152,12 @@ public class GerenciadorAppOnibus {
     }
 
     @GetMapping(value = {"/index", "/"})
-    public String mostrarTelaInicial() {
+    public String mostrarTelaInicial(Usuario usuario) {
         return "index";
     }
 
     @PostMapping("/logar-usuario")
-    private String logarUsuario(Usuario usuario, BindingResult bindingResult) {
+    private String logarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
 //        System.out.println("\n LOGANDO USUÁRIO: ");
 //        System.out.print("Informe CPF: ");
 //        String cpf = sc.next();
@@ -164,14 +165,14 @@ public class GerenciadorAppOnibus {
         String senha = usuario.getSenha();
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
-
+        System.out.printf("\nchegou aqui %s %s\n", login, senha);
         try {
-            String sql = "SELECT * FROM usuario WHERE cpf = ? and senha = ?";
+            String sql = "SELECT * FROM usuario WHERE login = ? and senha = ?";
 
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, login);
-            preparedStatement.setString(1, senha);
+            preparedStatement.setString(2, senha);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -186,16 +187,22 @@ public class GerenciadorAppOnibus {
                 CartaoGeral cartaoGeral = obterCartao(usuarioEncontrado.getCpf());
 
                 usuarioEncontrado.setCartaoGeral(cartaoGeral);
+//                System.out.printf("\nUser %s cpf %s cartao %s\n", usuarioEncontrado.getNome(), usuarioEncontrado.getCpf(), cartaoGeral.getCodigoNFC());
 
+                model.addAttribute("userName", usuarioEncontrado.getNome());
+                model.addAttribute("usuario", usuarioEncontrado);
+                model.addAttribute("cartaoGeral", usuarioEncontrado.getCartaoGeral());
                 return "usuario-logado";
 
             } else {
+                // printar no index que nao achou o usuario
                 return "redirect:/";
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // printar no index que nao achou o usuario
         return "redirect:/";
     }
 
