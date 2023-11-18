@@ -6,9 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +26,8 @@ public class GerenciadorAppOnibus {
     PreparedStatement preparedStatement;
 
 
-    public void queryUsuario() {
+    @GetMapping("/pagina-secreta-todos-usuario")
+    public String queryUsuario(Model model) {
 
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
@@ -50,8 +54,8 @@ public class GerenciadorAppOnibus {
         } catch (SQLException ex) {
             Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Usuario u : usuarios)
-            System.out.printf("Usuário com dados: %s %s\n", u.getCpf(), u.getNome());
+        model.addAttribute("usuarios", usuarios);
+        return "todos-usuarios";
     }
 
     public void queryCartaoGeral() {
@@ -94,23 +98,13 @@ public class GerenciadorAppOnibus {
         return this.valorCredito;
     }
 
-    private Usuario criarUsuario(Scanner sc) {
-        System.out.println("\n CRIANDO NOVO USUÁRIO: ");
-        System.out.print("Informe nome: ");
-        String nome = sc.nextLine();
-        System.out.print("Informe login: ");
-        String login = sc.nextLine();
-        System.out.print("Informe senha: ");
-        String senha = sc.nextLine();
-        System.out.print("Informe CPF: ");
-        String cpf = sc.nextLine();
-        System.out.print("Informe CEP: ");
-        String cep = sc.nextLine();
-        System.out.print("Informe endereço: ");
-        String endereco = sc.nextLine();
+    @GetMapping("/form-criar-usuario")
+    private String formCriarUsuario(Usuario usuario) {
+        return "form-novo-usuario";
+    }
 
-        Usuario usuario = new Usuario(login, senha, nome, cep, cpf, endereco);
-
+    @PostMapping("/criar-usuario")
+    private String criarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
 
@@ -118,12 +112,12 @@ public class GerenciadorAppOnibus {
             String sqlInsertUser = "INSERT INTO usuario (login, senha, nome, cep, cpf, endereco) VALUES (?, ?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(sqlInsertUser);
 
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, senha);
-            preparedStatement.setString(3, nome);
-            preparedStatement.setString(4, cep);
-            preparedStatement.setString(5, cpf);
-            preparedStatement.setString(6, endereco);
+            preparedStatement.setString(1, usuario.getLogin());
+            preparedStatement.setString(2, usuario.getSenha());
+            preparedStatement.setString(3, usuario.getNome());
+            preparedStatement.setString(4, usuario.getCep());
+            preparedStatement.setString(5, usuario.getCpf());
+            preparedStatement.setString(6, usuario.getEndereco());
 
             int linhasAfetadas = preparedStatement.executeUpdate();
 
@@ -142,13 +136,18 @@ public class GerenciadorAppOnibus {
             linhasAfetadas = preparedStatement.executeUpdate();
 
             if (linhasAfetadas == 0) {
-                return null;
+                return "redirect:/";
             }
+
+            model.addAttribute("userName", usuario.getNome());
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("cartaoGeral", usuario.getCartaoGeral());
+            return "usuario-logado";
 
         } catch (SQLException ex) {
             Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return usuario;
+        return "redirect:/";
     }
 
     @GetMapping(value = {"/index", "/"})
@@ -156,16 +155,19 @@ public class GerenciadorAppOnibus {
         return "index";
     }
 
+    @GetMapping("/logout")
+    public String logoutUsuario(Usuario usuario, Model model) {
+        usuario = null;
+        return "index";
+    }
+
     @PostMapping("/logar-usuario")
     private String logarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
-//        System.out.println("\n LOGANDO USUÁRIO: ");
-//        System.out.print("Informe CPF: ");
-//        String cpf = sc.next();
         String login = usuario.getLogin();
         String senha = usuario.getSenha();
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
-        System.out.printf("\nchegou aqui %s %s\n", login, senha);
+//        System.out.printf("\nchegou aqui %s %s\n", login, senha);
         try {
             String sql = "SELECT * FROM usuario WHERE login = ? and senha = ?";
 
@@ -195,7 +197,7 @@ public class GerenciadorAppOnibus {
                 return "usuario-logado";
 
             } else {
-                // printar no index que nao achou o usuario
+                model.addAttribute("erro", "Usuario não encontado.");
                 return "redirect:/";
             }
 
@@ -203,6 +205,7 @@ public class GerenciadorAppOnibus {
             Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
         }
         // printar no index que nao achou o usuario
+        model.addAttribute("erro", "Usuario não encontado.");
         return "redirect:/";
     }
 
@@ -240,27 +243,73 @@ public class GerenciadorAppOnibus {
         return null;
     }
 
-    private void compraCredito(Usuario usuario, Scanner sc) {
+    private Usuario getUsuario(String cpf) {
+        databaseManager.connect();
+        Connection connection = databaseManager.getConnection();
+        Usuario usuarioEncontrado = null;
+
+        try {
+            String sql = "SELECT * FROM usuario WHERE cpf = ?";
+
+            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, cpf);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String login = resultSet.getString("login");
+                String senha = resultSet.getString("senha");
+                String nome = resultSet.getString("nome");
+                String cep = resultSet.getString("cep");
+                String endereco = resultSet.getString("endereco");
+
+                usuarioEncontrado = new Usuario(login, senha, nome, cep, cpf, endereco);
+
+                CartaoGeral cartaoGeral = obterCartao(usuarioEncontrado.getCpf());
+
+                usuarioEncontrado.setCartaoGeral(cartaoGeral);
+
+            } else {
+                return null;
+            }
+
+            } catch(SQLException ex){
+                Logger.getLogger(GerenciadorAppOnibus.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return usuarioEncontrado;
+    }
+
+    @GetMapping("/form-comprar-credito/{cpf}")
+    public String formComprarCredito(@PathVariable("cpf") String cpf, Model model) {
+        model.addAttribute("compra", new Compras());
+        model.addAttribute("userName", cpf);
+        return "comprar-creditos";
+    }
+
+    @PostMapping("/compra-credito/{cpf}")
+    private String compraCredito(@PathVariable("cpf") String cpf, Compras compra, Model model) {
+        Usuario usuario = getUsuario(cpf);
+        System.out.printf("Comprando para: %s cartao %s\n", usuario.getNome(), usuario.getCartaoGeral().getCodigoNFC());
         if (usuario == null) {
-            System.out.println("Você precisa estar logado para comprar créditos.");
-            return;
+            model.addAttribute("erro","Você precisa estar logado para comprar créditos.");
+            return "redirect:/";
         }
-        System.out.print("Comprar crédito normal (1) ou com benefício (2): ");
-        int tipo = sc.nextInt();
+        boolean comBeneficio = compra.getTipo().equals("comBeneficio");
+        boolean semBeneficio = compra.getTipo().equals("semBeneficio");
 
-        if (usuario.getCartaoGeral().getBeneficio() == true && tipo == 2) {
+        if (usuario.getCartaoGeral().getBeneficio() == true && comBeneficio) {
             setValorCredito(usuario.getCartaoGeral().getBeneficio());
-            usuario.getCartaoGeral().addCreditosBeneficio(usuario, valorCredito);
+            usuario.getCartaoGeral().addCreditosBeneficio(usuario, valorCredito, compra.getQntdCreditos());
 
-        } else if (usuario.getCartaoGeral().getBeneficio() == true && tipo == 1) {
+        } else if (usuario.getCartaoGeral().getBeneficio() == true && semBeneficio) {
             valorCredito = 4.8;
-            usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito);
+            usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito, compra.getQntdCreditos());
 
         } else {
             valorCredito = 4.8;
-            usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito);
+            usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito, compra.getQntdCreditos());
         }
-
 
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
@@ -285,6 +334,9 @@ public class GerenciadorAppOnibus {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("cartaoGeral", usuario.getCartaoGeral());
+        return "usuario-logado";
     }
 
         private void solicitaBeneficio(Usuario usuario) {
@@ -303,83 +355,6 @@ public class GerenciadorAppOnibus {
         FormularioBeneficio formularioBeneficio = new FormularioBeneficio();
         System.out.println("Enviando formulário de benefícios para CMTU.");
         // enviarAnaliseCmtu(formularioBeneficio);
-    }
-
-    public void makeMenu() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("\nSistema LondriBus - Escolha sua opção: ");
-        System.out.println("1 - Cadastrar novo usuário\n" +
-                "2 - Logar usuário\n" +
-                "3 - Comprar créditos\n" +
-                "4 - Solicitar benefício de estudante\n" +
-                "5 - Acessar notificações\n" +
-                "6 - Solicitar status cartão\n" +
-                "7 - SAC\n" +
-                "0 - SAIR\n");
-        int op = sc.nextInt();
-
-        Usuario usuario = null;
-        while (op != 0) {
-            switch (op) {
-                case 1:
-                    usuario = criarUsuario(sc);
-                    if (usuario == null)
-                        System.out.println("Falha ao inserir usuário. Tente novamente");
-                    else
-                        System.out.print("\nUsuário " + usuario.getNome() + " criado e logado!\n");
-                    break;
-
-                case 2:
-                    if (usuario != null) break;
-//                    usuario = logarUsuario();
-                    if (usuario == null)
-                        System.out.println("Nenhum usuário encontrado com o CPF informado. Tente novamente\n");
-                    else
-                        System.out.print("\nUsuário " + usuario.getNome() + " logado!\n");
-                    break;
-
-                case 3:
-                    compraCredito(usuario, sc);
-                    break;
-
-                case 4:
-                    solicitaBeneficio(usuario);
-                    break;
-
-                case 5:
-                    Notificador notificador = new Notificador();
-//                    notificador.filtrarNoticias();
-                    System.out.println("Sistema de notícias relevantes no transporte público em Londrina\n");
-//                    notificador.filtrarAnomalias();
-                    System.out.println("Sistema de anomalias no transporte público em  Londrina\n");
-                    break;
-
-                case 6:
-                    printStatusCartao(usuario, usuario.getCartaoGeral());
-                    break;
-
-                case 7:
-                    GerenciadorSAC sac = new GerenciadorSAC();
-                    sac.inicioAtendimento();
-                    break;
-
-                default:
-                    System.out.println("Opção indisponível. Tente novamente.");
-                    break;
-            }
-
-            System.out.println("\nSistema LondriBus - Escolha sua opção: ");
-            System.out.println("1 - Cadastrar novo usuário\n" +
-                    "2 - Logar usuário\n" +
-                    "3 - Comprar créditos\n" +
-                    "4 - Solicitar benefício de estudante\n" +
-                    "5 - Acessar notificações\n" +
-                    "6 - Solicitar status cartão\n" +
-                    "7 - SAC\n" +
-                    "0 - SAIR\n");
-            op = sc.nextInt();
-        }
-        sc.close();
     }
 
     public void printStatusCartao(Usuario u, CartaoGeral cg) {

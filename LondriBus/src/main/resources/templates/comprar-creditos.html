@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LondriBus</title>
+</head>
+
+<body>
+<h2>Comprar credito no LondriBus</h2>
+<var th:text="${userName}"> </var>
+<form style="text-align: center"
+      action="#"
+      th:action="@{/compra-credito/{cpf}(cpf=${cpf})}"
+      th:object="${compra}"
+      method="post">
+    <label for="tipo">Tipo da Compra:</label>
+    <div id="tipo">
+        <input type="radio" id="comBeneficio" th:field="*{tipo}" value="comBeneficio">
+        <label for="comBeneficio">Com Benefício</label>
+
+        <input type="radio" id="semBeneficio" th:field="*{tipo}" value="semBeneficio">
+        <label for="semBeneficio">Sem Benefício</label>
+    </div>
+    <br/><br/>
+    <label for="qntd">Quantidade de creditos: </label>
+    <input type="text" th:field="*{qntdCreditos}" id="qntd">
+    <span th:if="${#fields.hasErrors('qntdCreditos')}" th:errors="*{qntdCreditos}"></span>
+    <br/><br/>
+    <input type="submit" value="Comprar">
+</form>
+<td><a th:href="@{/}">Voltar</a></td>
+</body>
+
+</html>

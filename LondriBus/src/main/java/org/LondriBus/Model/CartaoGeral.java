@@ -28,11 +28,8 @@ public class CartaoGeral {
     }
 
     //Compra de Crédito (Provisório), valor vem do Controller
-    public void addCreditosGeral(Usuario usuario, double valor) {
+    public void addCreditosGeral(Usuario usuario, double valor, int quantidadeDesejada) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite a quantidade de créditos desejada: ");
-        int quantidadeDesejada = scanner.nextInt();
-        scanner.nextLine();
         CartaoGeral cg = usuario.getCartaoGeral();
 
         if (quantidadeDesejada > 0) {
@@ -46,13 +43,9 @@ public class CartaoGeral {
     }
 
     //Praticamente igual à addCreditosGeral(), pode deixar em uma mesma função ou não
-    public void addCreditosBeneficio(Usuario estudante, double valor){
+    public void addCreditosBeneficio(Usuario estudante, double valor, int quantidadeDesejada){
         CartaoGeral ce = estudante.getCartaoGeral();
         if (ce.getBeneficio()) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Digite a quantidade de créditos desejada: ");
-            int quantidadeDesejada = scanner.nextInt();
-            scanner.nextLine();
 
             if (quantidadeDesejada > 0) {
                 double valorTotal = quantidadeDesejada * valor;

@@ -26,13 +26,14 @@
         <td th:text="${usuario.cpf}"></td>
         <td th:text="${usuario.cep}"></td>
         <td th:text="${cartaoGeral.codigoNFC}"></td>
-        <td th:text="${cartaoGeral.numUnico}"></td>
         <td th:text="${cartaoGeral.saldoGeral}"></td>
         <td th:text="${cartaoGeral.saldoBeneficio}"></td>
         <td><a class="btn-edit" th:href="@{/}">Editar</a></td>
         <td><a class="btn-remove" th:href="@{/}">Remover</a></td>
     </tbody>
 </table>
-<p><a th:href="@{/index}" class="btn-add">Sair</a></p>
+<p><a th:href="@{/form-comprar-credito/{cpf}(cpf=${usuario.cpf})}" class="btn-add">Comprar credito</a></p>
+<p><a th:href="@{/logout}" class="btn-add">Solicitar beneficio</a></p>
+<p><a th:href="@{/logout}" class="btn-add">Sair</a></p>
 </body>
 </html>

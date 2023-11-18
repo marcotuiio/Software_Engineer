@@ -15,6 +15,7 @@ public class DatabaseManagerApp {
 
     public void connect() {
         try {
+            // Class.forName("org.postgresql.Driver");
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
