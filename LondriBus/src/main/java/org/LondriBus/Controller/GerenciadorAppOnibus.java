@@ -289,6 +289,9 @@ public class GerenciadorAppOnibus {
 
     @PostMapping("/compra-credito/{cpf}")
     private String compraCredito(@PathVariable("cpf") String cpf, Compras compra, Model model) {
+
+        // DAR UM JEITO DE MOSTRAR O VALOR DA COMPRA
+
         Usuario usuario = getUsuario(cpf);
         System.out.printf("Comprando para: %s cartao %s\n", usuario.getNome(), usuario.getCartaoGeral().getCodigoNFC());
         if (usuario == null) {
@@ -334,27 +337,76 @@ public class GerenciadorAppOnibus {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         model.addAttribute("usuario", usuario);
         model.addAttribute("cartaoGeral", usuario.getCartaoGeral());
         return "usuario-logado";
     }
 
-        private void solicitaBeneficio(Usuario usuario) {
+    @GetMapping("/form-beneficio/{cpf}")
+    public String formBeneficio(@PathVariable("cpf") String cpf, Model model) {
+        model.addAttribute("formBeneficio", new FormularioBeneficio());
+        model.addAttribute("cpf", cpf);
+        return "form-beneficio";
+    }
+
+    @PostMapping("/beneficio/{cpf}")
+    private String solicitaBeneficio(@PathVariable("cpf") String cpf, FormularioBeneficio formBeneficio, Model model) {
+        Usuario usuario = getUsuario(cpf);
+        System.out.printf("Solicitando beneficio para: %s cartao %s\n", usuario.getNome(), usuario.getCartaoGeral().getCodigoNFC());
         if (usuario == null) {
-            System.out.println("Você precisa estar logado para solicitar benefício.");
-            return;
+            model.addAttribute("erro","Você precisa estar logado para solicitar beneficio.");
+            return "redirect:/";
         }
         if (usuario.getCartaoGeral().getBeneficio()) {
-            System.out.println("Você já tem benefício.");
-            return;
+            model.addAttribute("erro", "Você já tem beneficio!");
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("cartaoGeral", usuario.getCartaoGeral());
+            return "usuario-logado";
         }
-        // Fazer tabela para documentos do benefício
-        System.out.println("Anexe os documentos: ");
-        String docs = " - "; // não sei como anexar documentos
 
-        FormularioBeneficio formularioBeneficio = new FormularioBeneficio();
-        System.out.println("Enviando formulário de benefícios para CMTU.");
-        // enviarAnaliseCmtu(formularioBeneficio);
+//         boolean aprovado = enviarCMTU(formBeneficios);
+        boolean aprovado = false;
+         if (!aprovado) {
+             model.addAttribute("erro", "Sinto muito, sua requisição de beneficio foi negada pela CMTU");
+             model.addAttribute("usuario", usuario);
+             model.addAttribute("cartaoGeral", usuario.getCartaoGeral());
+             return "usuario-logado";
+         }
+
+        // INICIO AREA DE SIMULACAO DE APROVAR O BENEFICIO !!!!
+        usuario.getCartaoGeral().setBeneficio(true);
+        databaseManager.connect();
+        Connection connection = databaseManager.getConnection();
+        try {
+            String sqlInsertUser = "UPDATE cartaogeral SET beneficio = ? WHERE cpfUser = ?";
+            preparedStatement = connection.prepareStatement(sqlInsertUser);
+
+            preparedStatement.setBoolean(1, usuario.getCartaoGeral().getBeneficio());
+            preparedStatement.setString(2, usuario.getCpf());
+
+            int linhasAfetadas = preparedStatement.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                System.out.println("Cartão geral atualizado com sucesso!");
+            } else {
+                System.out.println("Falha ao atualizar o cartão geral.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        // FIM AREA SIMULACAO
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("cartaoGeral", usuario.getCartaoGeral());
+        return "usuario-logado";
+    }
+
+    @GetMapping("/sac/{cpf}")
+    public String gotoSac(@PathVariable("cpf") String cpf, Model model) {
+        model.addAttribute("userName", cpf);
+        return "sac";
     }
 
     public void printStatusCartao(Usuario u, CartaoGeral cg) {

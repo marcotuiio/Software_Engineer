@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Benefício LondriBus</title>
+</head>
+<body>
+<h2>Solicite seu Benefício de Transporte no LondriBus</h2>
+<form style="text-align: center"
+      action="#"
+      th:action="@{/beneficio/{cpf}(cpf=${cpf})}"
+      th:object="${formBeneficio}"
+      method="post">
+    <label for="rg">RG: </label>
+    <input type="file" th:field="*{documentos}" id="rg" alt="">
+    <br/><br/>
+    <label for="residencia">Comprovante Residencia: </label>
+    <input type="file" th:field="*{documentos}" id="residencia" alt="">
+    <br/><br/>
+    <label for="matricula">Comprovante Matricula: </label>
+    <input type="file" th:field="*{documentos}" id="matricula" alt="">
+    <br/><br/>
+    <input type="submit" value="Submeter">
+</form>
+</body>
+</html>
