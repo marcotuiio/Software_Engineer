@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LondriBus</title>
+</head>
+
+<body>
+    <h2>Login de User no LondriBus</h2>
+    <form style="text-align: center"
+          action="#"
+          th:action="@{/logar-usuario}"
+          th:object="${usuario}"
+          method="post">
+        <label for="login">login: </label>
+        <input type="text" th:field="*{login}" id="login">
+        <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+        <label for="senha">senha: </label>
+        <input type="password" th:field="*{senha}" id="senha">
+        <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+        <br/><br/>
+        <input type="submit" value="Logar">
+    </form>
+    <td><a th:href="@{/form-criar-usuario}">Criar novo user</a></td>
+</body>
+<var th:text="${erro}"> </var>
+</html>

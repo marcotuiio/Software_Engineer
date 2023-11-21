@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--    <link rel="stylesheet" th:href="@{/static/style_index.css}">-->
+    <title>Users</title>
+</head>
+<div class="center">
+    <body>
+    <h2>Pagina secreta de todos os usuarios</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Login</th>
+            <th>Senha</th>
+            <th>Nome</th>
+            <th>Cpf</th>
+            <th>REMOVER</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.login}"></td>
+            <td th:text="${usuario.senha}"></td>
+            <td th:text="${usuario.nome}"></td>
+            <td th:text="${usuario.cpf}"></td>
+<!--            <td th:text="${usuario.cartaoGeral.codigoNFC}"></td>-->
+            <td style="text-align: center;"><a th:href="@{/remover-usuario/{cpf}(cpf=${usuario.cpf})}">Remover</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <td><a th:href="@{/}">Teste</a></td>
+    </body>
+</div>
+</html>

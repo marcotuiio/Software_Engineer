@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LondriBus</title>
+</head>
+
+<body>
+<h2>Criar novo usuário no LondriBus</h2>
+<form style="text-align: center"
+      action="#"
+      th:action="@{/criar-usuario}"
+      th:object="${usuario}"
+      method="post">
+    <label for="login">login: </label>
+    <input type="text" th:field="*{login}" id="login">
+    <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+    <label for="senha">senha: </label>
+    <input type="password" th:field="*{senha}" id="senha">
+    <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+    <label for="nome">nome: </label>
+    <input type="text" th:field="*{nome}" id="nome">
+    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+    <label for="cep">cep: </label>
+    <input type="text" th:field="*{cep}" id="cep">
+    <span th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}"></span>
+    <label for="cpf">cpf: </label>
+    <input type="text" th:field="*{cpf}" id="cpf">
+    <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+    <label for="endereco">endereço: </label>
+    <input type="text" th:field="*{endereco}" id="endereco">
+    <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}"></span>
+    <br/><br/>
+    <input type="submit" value="Criar">
+</form>
+<td><a th:href="@{/}">Voltar</a></td>
+</body>
+
+</html>

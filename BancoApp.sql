@@ -42,6 +42,7 @@ VALUES
 
 select * from cartaogeral;
 select * from usuario;
+SELECT * FROM usuario WHERE login = 'joao123'  and senha = 'senha123';
 
 -- TEST AREA
 

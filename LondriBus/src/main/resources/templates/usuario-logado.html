@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuario Logado</title>
+</head>
+<body>
+<h2>Cartão LondriBus de: </h2>
+<var th:text="${userName}"> </var>
+<br/><br/>
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Cpf</th>
+        <th>CEP</th>
+        <th>NFC Cartao</th>
+        <th>Saldo Geral</th>
+        <th>Saldo Beneficio</th>
+        <th>Editar</th>
+        <th>Remover</th>
+    </tr>
+    </thead>
+    <tbody>
+        <td th:text="${usuario.nome}"></td>
+        <td th:text="${usuario.cpf}"></td>
+        <td th:text="${usuario.cep}"></td>
+        <td th:text="${cartaoGeral.codigoNFC}"></td>
+        <td th:text="${cartaoGeral.saldoGeral}"></td>
+        <td th:text="${cartaoGeral.saldoBeneficio}"></td>
+<!--        <td><a class="btn-edit" th:href="@{/}">Editar</a></td>-->
+<!--        <td><a class="btn-remove" th:href="@{/}">Remover</a></td>-->
+    </tbody>
+</table>
+<p><a th:href="@{/form-comprar-credito/{cpf}(cpf=${usuario.cpf})}" >Comprar credito</a></p>
+<p><a th:href="@{/form-beneficio/{cpf}(cpf=${usuario.cpf})}" >Solicitar beneficio</a></p>
+<p><a th:href="@{/sac/{cpf}(cpf=${usuario.cpf})}">SAC</a></p>
+<p><a th:href="@{/logout}" >Sair</a></p>
+<var th:text="${erro}"></var>
+</body>
+</html>
