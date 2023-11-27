@@ -2,32 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="../static/style.css" th:href="@{/style.css}" rel="stylesheet">
     <title>LondriBus</title>
 </head>
-
 <body>
-<h2>Comprar credito no LondriBus</h2>
-<var th:text="${userName}"> </var>
-<form style="text-align: center"
-      action="#"
-      th:action="@{/compra-credito/{cpf}(cpf=${cpf})}"
-      th:object="${compra}"
-      method="post">
-    <label for="tipo">Tipo da Compra:</label>
-    <div id="tipo">
-        <input type="radio" id="comBeneficio" th:field="*{tipo}" value="comBeneficio">
-        <label for="comBeneficio">Com Benefício</label>
-
-        <input type="radio" id="semBeneficio" th:field="*{tipo}" value="semBeneficio">
-        <label for="semBeneficio">Sem Benefício</label>
+    <div class="main-container">
+        <div class="top-nav">
+            <h2>Comprar créditos</h2>
+        </div>
+        <div class="flexbox">
+            <p class="user-data-label">CPF: </p>
+            <p th:text="${userCpf}"/>
+        </div>
+        <form class="form" action="#" th:action="@{/compra-credito/{cpf}(cpf=${cpf})}" th:object="${compra}" method="post">
+            <div id="tipo">
+                <p>Selecione tipo de compra:</p>
+                <input type="radio" id="comBeneficio" th:field="*{tipo}" value="comBeneficio">
+                <label for="comBeneficio">Com benefício</label>
+                <input type="radio" id="semBeneficio" th:field="*{tipo}" value="semBeneficio">
+                <label for="semBeneficio">Sem benefício</label>
+            </div>
+            <div class="flexbox">
+                <label for="qntd">Quantidade de créditos:</label>
+                <input class="form-cadastro-field" type="text" th:field="*{qntdCreditos}" id="qntd">
+            </div>
+            <span th:if="${#fields.hasErrors('qntdCreditos')}" th:errors="*{qntdCreditos}"></span>
+            <input class="button" type="submit" value="Comprar">
+        </form>
     </div>
-    <br/><br/>
-    <label for="qntd">Quantidade de creditos: </label>
-    <input type="text" th:field="*{qntdCreditos}" id="qntd">
-    <span th:if="${#fields.hasErrors('qntdCreditos')}" th:errors="*{qntdCreditos}"></span>
-    <br/><br/>
-    <input type="submit" value="Comprar">
-</form>
 </body>
-
 </html>

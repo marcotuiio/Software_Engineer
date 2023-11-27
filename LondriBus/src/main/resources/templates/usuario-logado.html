@@ -2,40 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Usuario Logado</title>
+    <link href="../static/style.css" th:href="@{/style.css}" rel="stylesheet">
+    <title>LondriBus</title>
 </head>
 <body>
-<h2>Cartão LondriBus de: </h2>
-<var th:text="${userName}"> </var>
-<br/><br/>
-<table>
-    <thead>
-    <tr>
-        <th>Nome</th>
-        <th>Cpf</th>
-        <th>CEP</th>
-        <th>NFC Cartao</th>
-        <th>Saldo Geral</th>
-        <th>Saldo Beneficio</th>
-        <th>Editar</th>
-        <th>Remover</th>
-    </tr>
-    </thead>
-    <tbody>
-        <td th:text="${usuario.nome}"></td>
-        <td th:text="${usuario.cpf}"></td>
-        <td th:text="${usuario.cep}"></td>
-        <td th:text="${cartaoGeral.codigoNFC}"></td>
-        <td th:text="${cartaoGeral.saldoGeral}"></td>
-        <td th:text="${cartaoGeral.saldoBeneficio}"></td>
-<!--        <td><a class="btn-edit" th:href="@{/}">Editar</a></td>-->
-<!--        <td><a class="btn-remove" th:href="@{/}">Remover</a></td>-->
-    </tbody>
-</table>
-<p><a th:href="@{/form-comprar-credito/{cpf}(cpf=${usuario.cpf})}" >Comprar credito</a></p>
-<p><a th:href="@{/form-beneficio/{cpf}(cpf=${usuario.cpf})}" >Solicitar beneficio</a></p>
-<p><a th:href="@{/sac/{cpf}(cpf=${usuario.cpf})}">SAC</a></p>
-<p><a th:href="@{/logout}" >Sair</a></p>
-<var th:text="${erro}"></var>
+    <div class="main-container">
+        <div class="top-nav">
+            <h2>Página de usuário</h2>
+        </div>
+        <div class="user-data-box">
+            <div class="flexbox">
+                <p>Bem-vindo(a), </p>
+                <p class="username" th:text="${userName}"> </p>
+            </div>
+            <div class="flexbox">
+                <p class="user-data-label">CPF:</p>
+                <p th:text="${usuario.cpf}"/>
+            </div>
+            <div class="flexbox">
+                <p class="user-data-label">CEP:</p>
+                <p th:text="${usuario.cep}"/>
+            </div>
+            <div class="flexbox">
+                <p class="user-data-label">Código NFC:</p>
+                <p th:text="${cartaoGeral.codigoNFC}"/>
+            </div>
+            <div class="flexbox">
+                <p class="user-data-label">Saldo geral:</p>
+                <p th:text="${cartaoGeral.saldoGeral}"/>
+            </div>
+            <div class="flexbox">
+                <p class="user-data-label">Saldo benefício:</p>
+                <p th:text="${cartaoGeral.saldoBeneficio}"/>
+            </div>
+        </div>
+        <div class="flexbox">
+            <p><a class="button" th:href="@{/form-comprar-credito/{cpf}(cpf=${usuario.cpf})}" >Comprar créditos</a></p>
+            <p><a class="button" th:href="@{/form-beneficio/{cpf}(cpf=${usuario.cpf})}" >Solicitar beneficio</a></p>
+            <p><a class="button" th:href="@{/sac/{cpf}(cpf=${usuario.cpf})}">SAC</a></p>
+        </div>
+        <p><a class="link" th:href="@{/logout}" >Sair</a></p>
+        <var th:text="${erro}"></var>
+    </div>
 </body>
 </html>

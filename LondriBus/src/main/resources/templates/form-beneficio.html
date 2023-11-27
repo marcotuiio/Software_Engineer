@@ -2,25 +2,29 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Benefício LondriBus</title>
+    <link href="../static/style.css" th:href="@{/style.css}" rel="stylesheet">
+    <title>LondriBus</title>
 </head>
 <body>
-<h2>Solicite seu Benefício de Transporte no LondriBus</h2>
-<form style="text-align: center"
-      action="#"
-      th:action="@{/beneficio/{cpf}(cpf=${cpf})}"
-      th:object="${formBeneficio}"
-      method="post">
-    <label for="rg">RG: </label>
-    <input type="file" th:field="*{documentos}" id="rg" alt="">
-    <br/><br/>
-    <label for="residencia">Comprovante Residencia: </label>
-    <input type="file" th:field="*{documentos}" id="residencia" alt="">
-    <br/><br/>
-    <label for="matricula">Comprovante Matricula: </label>
-    <input type="file" th:field="*{documentos}" id="matricula" alt="">
-    <br/><br/>
-    <input type="submit" value="Submeter">
-</form>
+    <div class="main-container">
+        <div class="top-nav">
+            <h2>Solicite seu benefício de transporte no LondriBus</h2>
+        </div>
+        <form class="form" action="#" th:action="@{/beneficio/{cpf}(cpf=${cpf})}" th:object="${formBeneficio}" method="post">
+            <div class="flexbox def-margin">
+                <label for="rg">RG: </label>
+                <input type="file" th:field="*{documentos}" id="rg" alt="">
+            </div>
+            <div class="flexbox def-margin">
+                <label for="residencia">Comprovante Residencia: </label>
+                <input type="file" th:field="*{documentos}" id="residencia" alt="">
+            </div>
+            <div class="flexbox def-margin">
+                <label for="matricula">Comprovante Matricula: </label>
+                <input type="file" th:field="*{documentos}" id="matricula" alt="">
+            </div>
+            <input class="button" type="submit" value="Solicitar">
+        </form>
+    </div>
 </body>
 </html>
