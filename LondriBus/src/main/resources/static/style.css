@@ -1,0 +1,128 @@
+:root {
+    --primary-color: #fb9a1c;
+    --secondary-color: #ffd179;
+    --alt-color: #1B4079;
+
+    --def-font: 'Source Code Pro', monospace;
+
+    --def-padding: 12px;
+    --alt-padding: 3px;
+
+    --shadow: 2px 2px 2px rgb(128, 128, 128);
+    --bottom-shadow: 0 4px 2px -2px rgb(128, 128, 128);
+    --round: 9px;
+    --half-round: 3px;
+    --timer: all 1s ease;
+}
+
+body {
+    font-family: var(--def-font);
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1, h2 {
+    color: white;
+}
+
+.main-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-name {
+    text-shadow: var(--shadow);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.5em;
+}
+
+.form-field {
+    margin: 0 .7em .7em .7em;
+    padding: var(--def-padding);
+    border-radius: var(--round);
+    border: 1px solid rgb(128, 128, 128);
+}
+
+.form-field:focus {
+    outline: 1px solid var(--primary-color);
+}
+
+.icon {
+    width: 25vh;
+    height: 25vh;
+}
+
+.button {
+    color: white;
+    background-color: var(--primary-color);
+    padding: var(--def-padding);
+    margin: .7em .7em 0 .7em;
+    border-radius: var(--round);
+    border: none;
+    box-shadow: var(--bottom-shadow);
+    transition: var(--timer);
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: var(--alt-color);
+}
+
+.gray-txt {
+    font-size: .9em;
+    color: rgb(128, 128, 128);
+}
+
+.link {
+    font-size: .9em;
+    color: var(--primary-color);
+    font-weight: bold;
+    text-decoration: none;
+    transition: var(--timer);
+}
+
+.link:hover{
+    color: var(--alt-color);
+}
+
+.top-nav {
+    width: 75vh;
+    display: flex;
+    margin: 1em;
+    background-color: var(--primary-color);
+    padding: var(--alt-padding);
+    border-radius: var(--round);
+    text-shadow: var(--shadow);
+    text-transform: uppercase;
+}
+
+.top-nav > h2 {
+    margin: .5em;
+}
+
+.form-cadastro-field {
+    width: 30vh;
+    padding: var(--alt-padding);
+    border-radius: var(--half-round);
+    border: none;
+    margin: .7em;
+}
+
+.form-cadastro-field:focus {
+    outline: 1px solid var(--primary-color);
+}
+
+.form-cadastro-label {
+    align-self: flex-start;
+    margin: .7em 0 0 .7em;
+}
