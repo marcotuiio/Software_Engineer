@@ -2,12 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="../static/style.css" th:href="@{/style.css}" rel="stylesheet">
+    <title>LondriBus</title>
 </head>
 <body>
-<h2>Usuário sendo redirecionado para SAC</h2>
-<var th:text="${userName}"> </var>
-<br/><br/>
-    AGUARDE UM MOMENTO...
+    <div class="main-container">
+        <div class="top-nav">
+            <h2>REDIRECIONAMENTO PARA SAC</h2>
+        </div>
+        <div class="flexbox">
+            <p class="user-data-label">CPF: </p>
+            <p th:text="${userName}"/>
+        </div>
+        <p class="username">Aguarde um momento...</p>
+    </div>
 </body>
 </html>

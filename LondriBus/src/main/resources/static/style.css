@@ -25,6 +25,11 @@ body {
     margin: 0;
 }
 
+.flexbox {
+    display: flex;
+    align-items: center;
+}
+
 h1, h2 {
     color: white;
 }
@@ -38,6 +43,10 @@ h1, h2 {
 
 .app-name {
     text-shadow: var(--shadow);
+}
+
+.def-margin {
+    margin: .7em;
 }
 
 .form {
@@ -71,6 +80,7 @@ h1, h2 {
     border: none;
     box-shadow: var(--bottom-shadow);
     transition: var(--timer);
+    text-decoration: none;
 }
 
 .button:hover {
@@ -125,4 +135,36 @@ h1, h2 {
 .form-cadastro-label {
     align-self: flex-start;
     margin: .7em 0 0 .7em;
+}
+
+.username {
+    text-transform: uppercase;
+}
+
+.user-data-box {
+    align-items: flex-start;
+    margin: .7em;
+}
+
+.user-data-label {
+    font-weight: bold;
+    margin-right: .7em;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"] + label:before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 2px solid orange;
+}
+
+input[type="radio"]:checked + label:before {
+    background-color: var(--primary-color);
 }

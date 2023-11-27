@@ -283,7 +283,7 @@ public class GerenciadorAppOnibus {
     @GetMapping("/form-comprar-credito/{cpf}")
     public String formComprarCredito(@PathVariable("cpf") String cpf, Model model) {
         model.addAttribute("compra", new Compras());
-        model.addAttribute("userName", cpf);
+        model.addAttribute("userCpf", cpf);
         return "comprar-creditos";
     }
 
