@@ -26,7 +26,7 @@ public class GerenciadorAppOnibus {
     PreparedStatement preparedStatement;
 
 
-    @GetMapping("/pagina-secreta-todos-usuario")
+    @GetMapping("/pio")
     public String queryUsuario(Model model) {
 
         databaseManager.connect();

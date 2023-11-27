@@ -2,26 +2,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="../static/style.css" th:href="@{style.css}" rel="stylesheet">
     <title>LondriBus</title>
 </head>
 
 <body>
-    <h2>Login de User no LondriBus</h2>
-    <form style="text-align: center"
-          action="#"
-          th:action="@{/logar-usuario}"
-          th:object="${usuario}"
-          method="post">
-        <label for="login">login: </label>
-        <input type="text" th:field="*{login}" id="login">
-        <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
-        <label for="senha">senha: </label>
-        <input type="password" th:field="*{senha}" id="senha">
-        <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
-        <br/><br/>
-        <input type="submit" value="Logar">
-    </form>
-    <td><a th:href="@{/form-criar-usuario}">Criar novo user</a></td>
+    <div class="main-container">
+        <img th:src="@{/assets/bus-icon.png}" alt="Bus Icon" class="icon">
+        <h1 class="app-name">LondriBus</h1>
+        <form class="form"
+              action="#"
+              th:action="@{/logar-usuario}"
+              th:object="${usuario}"
+              method="post">
+            <input class="form-field" type="text" th:field="*{login}" id="login" placeholder="Usuário">
+            <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+            <input class="form-field" type="password" th:field="*{senha}" id="senha" placeholder="Senha">
+            <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+            <input class="button" type="submit" value="Continuar">
+        </form>
+        <p class="gray-txt">Não possui uma conta?</p>
+        <td><a class="link" th:href="@{/form-criar-usuario}">Criar conta</a></td>
+    </div>
 </body>
 <var th:text="${erro}"> </var>
 </html>
