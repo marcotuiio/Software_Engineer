@@ -99,12 +99,12 @@ public class GerenciadorAppOnibus {
     }
 
     @GetMapping("/form-criar-usuario")
-    private String formCriarUsuario(Usuario usuario) {
+    public String formCriarUsuario(Usuario usuario) {
         return "form-novo-usuario";
     }
 
     @PostMapping("/criar-usuario")
-    private String criarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
+    public String criarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
 
@@ -162,7 +162,7 @@ public class GerenciadorAppOnibus {
     }
 
     @PostMapping("/logar-usuario")
-    private String logarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
+    public String logarUsuario(Usuario usuario, BindingResult bindingResult, Model model) {
         String login = usuario.getLogin();
         String senha = usuario.getSenha();
         databaseManager.connect();
@@ -209,7 +209,7 @@ public class GerenciadorAppOnibus {
         return "redirect:/";
     }
 
-    private CartaoGeral obterCartao(String cpf) {
+    public CartaoGeral obterCartao(String cpf) {
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
 
@@ -243,7 +243,7 @@ public class GerenciadorAppOnibus {
         return null;
     }
 
-    private Usuario getUsuario(String cpf) {
+    public Usuario getUsuario(String cpf) {
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
         Usuario usuarioEncontrado = null;
@@ -288,7 +288,7 @@ public class GerenciadorAppOnibus {
     }
 
     @PostMapping("/compra-credito/{cpf}")
-    private String compraCredito(@PathVariable("cpf") String cpf, Compras compra, Model model) {
+    public String compraCredito(@PathVariable("cpf") String cpf, Compras compra, Model model) {
 
         // DAR UM JEITO DE MOSTRAR O VALOR DA COMPRA
 
@@ -351,7 +351,7 @@ public class GerenciadorAppOnibus {
     }
 
     @PostMapping("/beneficio/{cpf}")
-    private String solicitaBeneficio(@PathVariable("cpf") String cpf, FormularioBeneficio formBeneficio, Model model) {
+    public String solicitaBeneficio(@PathVariable("cpf") String cpf, FormularioBeneficio formBeneficio, Model model) {
         Usuario usuario = getUsuario(cpf);
         System.out.printf("Solicitando beneficio para: %s cartao %s\n", usuario.getNome(), usuario.getCartaoGeral().getCodigoNFC());
         if (usuario == null) {
@@ -409,11 +409,4 @@ public class GerenciadorAppOnibus {
         return "sac";
     }
 
-    public void printStatusCartao(Usuario u, CartaoGeral cg) {
-        if (cg.getBeneficio()) {
-            System.out.println("USUARIO " + u.getNome() + " CARTAO ESTUDANTE " + cg.getCodigoNFC());
-        } else {
-            System.out.println("USUARIO " + u.getNome() + " CARTAO GERAL " + cg.getCodigoNFC());
-        }
-    }
 }
