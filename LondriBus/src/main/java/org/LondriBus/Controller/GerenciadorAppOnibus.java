@@ -291,6 +291,7 @@ public class GerenciadorAppOnibus {
     public String compraCredito(@PathVariable("cpf") String cpf, Compras compra, Model model) {
 
         // DAR UM JEITO DE MOSTRAR O VALOR DA COMPRA
+//        Api api = new Api();
 
         Usuario usuario = getUsuario(cpf);
         System.out.printf("Comprando para: %s cartao %s\n", usuario.getNome(), usuario.getCartaoGeral().getCodigoNFC());
@@ -313,6 +314,8 @@ public class GerenciadorAppOnibus {
             valorCredito = 4.8;
             usuario.getCartaoGeral().addCreditosGeral(usuario, valorCredito, compra.getQntdCreditos());
         }
+
+//        api.sendInfo();
 
         databaseManager.connect();
         Connection connection = databaseManager.getConnection();
